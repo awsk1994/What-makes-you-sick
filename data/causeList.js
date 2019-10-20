@@ -27,6 +27,19 @@ var causeList =
   "type": "cause",
   "id": "c36",
   "environment": {}
+ },
+ "c128": {
+  "datetime": "1571536759557",
+  "location": {
+   "lat": "42.37635409999999",
+   "lng": "-71.06077640000001"
+  },
+  "cause": "Drug Toxicity",
+  "locationText": "Bunker Hill Monument, Monument Square, Charlestown, MA, USA",
+  "details": "",
+  "type": "cause",
+  "id": "c128",
+  "environment": {}
  }
 }
 if (typeof window === 'undefined') { module.exports = causeList;}
