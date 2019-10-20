@@ -53,6 +53,7 @@ var hostFiles = [
   'utilities.js',
   'favicon.png',
   'data/causeList.js',
+  'data/causeList.json',
   'frontend/_Front.js',
   'favicon.ico',
 ];
@@ -116,6 +117,7 @@ var ready = function() {
     newFile += "\nif (typeof window === 'undefined') { module.exports = "+file+";}";
 
     fs.writeFileSync('./data/'+file+'.js', newFile);
+    fs.writeFileSync('./data/'+file+'.json', JSON.stringify(defs));
     console.log('saving ' + file + '.js');
     
     if (!localOnly) {
