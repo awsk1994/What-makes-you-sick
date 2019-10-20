@@ -99,6 +99,10 @@ var ready = function() {
     res.render('front', {});
   });
 
+  app.get('/ems', function(req, res) {
+    res.render('ems', {});
+  });
+
   app.post('/new', function(req, res) {
     var id = getNewId(causeList, 'c');
     req.body.id = id;

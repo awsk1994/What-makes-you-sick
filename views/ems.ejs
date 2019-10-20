@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>What Made You Sick?</title>
+<title>Environmental Determinants of Health</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="icon" type="image/png" href="/favicon.png" />
@@ -21,7 +21,7 @@
 <script src="/utilities.js"></script>
 <script src="/data/causeList.js"></script>
 <script src="/frontend/_Front.js"></script>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAq-0jYpWVSoSnDrnEFgtluJzp0mBcjnoo"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAq-0jYpWVSoSnDrnEFgtluJzp0mBcjnoo&libraries=places&language=en"></script>
 
 <style>
 
@@ -87,46 +87,28 @@
       </h3>
     </span>
   </div>
-  <div id="mainView" class="bg loading container" style="float: left;width: 100%;height: calc(100% - 43px);background-color: rgb(205, 205, 205);overflow-y: scroll; padding-top: 5px;padding-bottom: 10px;">
+  <div id="mainView" class="bg loading container" style="float: left; width: 100%; background-color: rgb(205, 205, 205); padding-top: 5px; padding-bottom: 10px;">
     <div class="col-xs-12" style="padding-left: 0px; padding-right: 0px;">
       <div>
         <h4 style="display: inline-block; margin-top: 15px; width: 100%;">
-          <span id="meetingName" style="margin-bottom: 10px; display: inline-block;">Where Did You Get Sick?</span>
-          <input class="form-control">
+          <span id="meetingName" style="margin-bottom: 10px; display: inline-block;">Patient Pickup Location</span>
+          <input id="mapSearch"  class="form-control" placeholder="Location Search">
         </h4>
         <div id="map" style="background-color: grey; width: 100%; height: 300px;">
         </div>
         <h4>
-          <span id="" style="margin-bottom: 0px; display: inline-block;">What Is Your Condition?</span>
+          <span style="margin-bottom: 0px; display: inline-block;">Patient Condition:</span>
         </h4>
-        <div id="conditionList" style="display: inline-block;">
-          <div class="btn btn-default" style="display: inline-block;">Fall</div>
-          <div class="btn btn-default" style="display: inline-block;">Injestion Toxicity</div>
-          <div class="btn btn-default" style="display: inline-block;">Overdose</div>
-          <div class="btn btn-default" style="display: inline-block;">Fever</div>
-          <div class="btn btn-default" style="display: inline-block;">Trouble Breathing</div>
-          <div class="btn btn-default" style="display: inline-block;">Motor Vehicle Accident</div>
-          <div class="btn btn-default" style="display: inline-block;">Gun Violence</div>
-          <div class="btn btn-default" style="display: inline-block;">Other</div>
-        </div>
+        <div id="conditionList" style="display: inline-block;"></div>
         <h4 id="environmentListTitle">
           <span id="" style="margin-bottom: 0px; display: inline-block;">Environmental Causes:</span>
         </h4>
-        <div id="environmentList" style="display: inline-block;">
-          <div class="btn btn-default" style="display: inline-block;">Sanitation</div>
-          <div class="btn btn-default" style="display: inline-block;">Drugs</div>
-          <div class="btn btn-default" style="display: inline-block;">Natural Disasters</div>
-          <div class="btn btn-default" style="display: inline-block;">Pollution</div>
-          <div class="btn btn-default" style="display: inline-block;">Bad Water</div>
-          <div class="btn btn-default" style="display: inline-block;">Homelessness</div>
-          <div class="btn btn-default" style="display: inline-block;">Nutrition</div>
-        </div>
-        <h4>
-          <span style="margin-bottom: 10px; display: inline-block;">Relevant Details:</span>
-          <textarea class="form-control"></textarea>
+        <div id="environmentList" style="display: inline-block;margin-bottom: 10px;"></div>
+        <h4 style="">
+          <span style="margin-bottom: 10px; display: inline-block;">Relevant Details: (optional)</span>
+          <textarea id="details" class="form-control"></textarea>
         </h4>
-        <div id="save" class="btn btn-success">Save</div>
-        <div id="addAnother" class="btn btn-primary">Did anything else make you sick?</div>
+        <div id="save" class="btn save btn-success">Submit</div>
       </div>
     </div>
   </div>
