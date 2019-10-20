@@ -98,6 +98,15 @@ var ready = function() {
     res.render('front', {});
   });
 
+  app.post('/new', function(req, res) {
+    var id = getNewId(causeList, 'c');
+    req.body.id = id;
+    req.body.environments = req.body.environments || {};
+    causeList[id] = req.body;
+    saveDefs(causeList, 'causeList')
+    res.json('done');
+  });
+
   app.use('/res', express.static('./res'));
 
   // Need to be able to update the body network

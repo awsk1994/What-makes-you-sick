@@ -2,9 +2,82 @@
 
 var Front = {};
 
-var refreshView = function() {
-  
+var condition = null;
+var environments = {};
+
+var selectedPlace = {
+  lat: 0,
+  lng: 0
 };
+
+var mapping = {
+  'Fall': {
+    'Environmental Hazards': true,
+    'Building Hazards': true
+  },
+  'Drug Toxicity': {},
+  'Overdoses': {},
+  'Fever': {
+    'Sanitation': true,
+    'Homelessness': true,
+    'Pollution': true,
+    'Weather': true
+  },
+  'Trouble Breathing': {
+    'Pollution': true,
+    'Building Hazards': true
+  },
+  'Motor Vehicle Accident': {
+    'Substance Use': true,
+    'Environmental Hazards': true    
+  },
+  'Gun Violence': {},
+  'Other': {
+    'Sanitation': true, 
+    'Drugs': true,
+    'Natural Disasters': true,
+    'Pollution': true,
+    'Bad water': true,
+    'Homelessness': true,
+    'Nutrition': true
+  }
+};
+
+var refreshView = function() {
+  if (mapping[condition] == null) condition = null;
+  $('#conditionList').empty();
+  for (var cTag in mapping) {
+    $('#conditionList').append($('<div class="btn condition '+((condition != null && cTag != condition) ? 'disabled' : '')+' btn-'+(cTag == condition ? 'primary' : 'default')+'" data-condition="'+cTag+'" style="display: inline-block;margin-right: 5px;margin-bottom: 5px;">'+cTag+'</div>'))
+  }
+
+  $('#environmentListTitle').toggle(!empty(mapping[condition]));
+  $('#environmentList').empty();
+  for (var envTag in (mapping[condition] || {})) {
+    $('#environmentList').append($('<div class="btn environment btn-'+(environments[envTag] != null ? 'primary' : 'default')+'" data-environment="'+envTag+'" style="display: inline-block;margin-right: 5px;margin-bottom: 5px;">'+envTag+'</div>'));
+  }
+
+  $('.condition').unbind('click').click(function() {
+    var cTag = getProp(this, 'condition');
+    if (condition == cTag) {
+      condition = null
+    } else {
+      condition = cTag;
+    }
+    environments = {};
+    refreshView();
+  });
+
+  $('.environment').unbind('click').click(function() {
+    var envTag = getProp(this, 'environment');
+    if (environments[envTag] != null) {
+      delete environments[envTag];
+    } else {
+      environments[envTag] = true;
+    }
+    refreshView();
+  });
+};
+
 
 $(window).bind('keydown', function(event) {
   if (event.ctrlKey || event.metaKey) {
@@ -18,65 +91,88 @@ $(window).bind('keydown', function(event) {
 });
 
 Front.ready = function() {
-  //Set up some of our variables.
-  var map; //Will contain map object.
-  var marker = false; ////Has the user plotted their location marker? 
-          
-  //Function called to initialize / create the map.
-  //This is called when the page has loaded.
-  function initMap() {
-   
-    //The center location of our map.
-    var centerOfMap = new google.maps.LatLng(52.357971, -6.516758);
- 
-    //Map options.
-    var options = {
-      center: centerOfMap, //Set center.
-      zoom: 7 //The zoom value.
-    };
- 
-    //Create the map object.
-    map = new google.maps.Map(document.getElementById('map'), options);
- 
-    //Listen for any clicks on the map.
-    google.maps.event.addListener(map, 'click', function(event) {                
-      //Get the location that the user clicked.
-      var clickedLocation = event.latLng;
-      //If the marker hasn't been added.
-      if(marker === false){
-        //Create the marker.
+  centerOfMap = new google.maps.LatLng(42.3497, -71.106);
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: centerOfMap,
+    zoom: 12
+  });
+  marker = null;
+
+  var searchBox = new google.maps.places.SearchBox($('#mapSearch')[0], {
+    bounds: map.getBounds(),
+    types: ['address']
+  });
+
+  searchBox.addListener('places_changed', function() {
+    var places = searchBox.getPlaces();
+    console.log(places);
+
+    if (places[0] != null) {
+      var currentLocation = places[0].geometry.location
+      selectedPlace.lat = currentLocation.lat();
+      selectedPlace.lng = currentLocation.lng();
+      marker.setPosition(currentLocation);
+      map.setCenter(currentLocation);
+    }
+  });
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var position = {lat: position.coords.latitude, lng: position.coords.longitude};
+      map.setCenter(position);
+      searchBox.setBounds(map.getBounds());
+      if (marker === null) {
         marker = new google.maps.Marker({
-          position: clickedLocation,
+          position: position,
           map: map,
-          draggable: true //make it draggable
+          draggable: true
         });
-        //Listen for drag events!
-        google.maps.event.addListener(marker, 'dragend', function(event){
-          markerLocation();
-        });
-      } else{
-        //Marker has already been added, so just change its location.
+      } else {
         marker.setPosition(clickedLocation);
       }
-      //Get the marker's location.
-      markerLocation();
+      google.maps.event.addListener(marker, 'dragend', function(event) {
+        var currentLocation = marker.getPosition();
+        selectedPlace.lat = currentLocation.lat();
+        selectedPlace.lng = currentLocation.lng();
+      });
     });
   }
-          
-  //This function will get the marker's current location and then add the lat/long
-  //values to our textfields so that we can save the location.
-  function markerLocation(){
-      //Get location.
-      var currentLocation = marker.getPosition();
-      //Add lat and lng values to a field that we can save.
-      console.log(currentLocation.lat(), currentLocation.lng());
-      // document.getElementById('lat').value = currentLocation.lat(); //latitude
-      // document.getElementById('lng').value = currentLocation.lng(); //longitude
-  }
-          
-  initMap();
-  // //Load the map when the page has finished loading.
-  // google.maps.event.addDomListener(window, 'load', initMap);
 
+  google.maps.event.addListener(map, 'click', function(event) {                
+    var clickedLocation = event.latLng;
+    if (marker === null) {
+      marker = new google.maps.Marker({
+        position: clickedLocation,
+        map: map,
+        draggable: true
+      });
+      google.maps.event.addListener(marker, 'dragend', function(event) {
+        var currentLocation = marker.getPosition();
+        selectedPlace.lat = currentLocation.lat();
+        selectedPlace.lng = currentLocation.lng();
+      });
+    } else {
+      marker.setPosition(clickedLocation);
+    }
+    var currentLocation = marker.getPosition();
+    selectedPlace.lat = currentLocation.lat();
+    selectedPlace.lng = currentLocation.lng();
+  });
+
+  $('#save').click(function() {
+    if (condition == null || selectedPlace.lat == 0) return;
+    $.post('/new', {
+      datetime: Date.now(),
+      location: selectedPlace,
+      cause: condition,
+      environment: environments,
+      details: $('#details').val(),
+      type: 'cause'
+    }, function() {
+      window.location.href = window.location.href;
+    })
+  });
+
+  refreshView();
 };
 
