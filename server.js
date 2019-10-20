@@ -101,7 +101,7 @@ var ready = function() {
   app.post('/new', function(req, res) {
     var id = getNewId(causeList, 'c');
     req.body.id = id;
-    req.body.environments = req.body.environments || {};
+    req.body.environment = req.body.environment || {};
     causeList[id] = req.body;
     saveDefs(causeList, 'causeList')
     res.json('done');

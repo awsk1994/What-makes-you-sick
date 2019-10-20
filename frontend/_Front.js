@@ -165,6 +165,7 @@ Front.ready = function() {
       datetime: Date.now(),
       location: selectedPlace,
       cause: condition,
+      locationText: $('#mapSearch').val(),
       environment: environments,
       details: $('#details').val(),
       type: 'cause'
