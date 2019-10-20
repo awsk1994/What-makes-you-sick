@@ -12,7 +12,7 @@ if (localOnly) {
 if (!localOnly) {
   // heroku config:get MONGODB_URI
 
-  var mongoURL = 'mongodb://heroku_m80mrxh5:mhirbbi7pfntai0vg0t2u3lvj6@ds355357.mlab.com:55357/heroku_m80mrxh5';
+  var mongoURL = 'mongodb://heroku_xssg0zn9:7b4oc9upfgmv4hnid8sp15m8qg@ds337418.mlab.com:37418/heroku_xssg0zn9';
   var mongoose = require('mongoose');
   mongoose.connect(mongoURL);
   var db = mongoose.connection;
