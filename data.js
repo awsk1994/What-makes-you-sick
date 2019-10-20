@@ -7,7 +7,8 @@
 **/
 
 var dbFileList = [
-  'causeList.js'
+  'causeList.js',
+  'causeList.json'
 ];
 
 var _ = require('lodash');
