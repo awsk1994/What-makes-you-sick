@@ -50,7 +50,7 @@ var refreshView = function() {
     $('#conditionList').append($('<div class="btn condition '+((condition != null && cTag != condition) ? 'disabled' : '')+' btn-'+(cTag == condition ? 'primary' : 'default')+'" data-condition="'+cTag+'" style="display: inline-block;margin-right: 5px;margin-bottom: 5px;">'+cTag+'</div>'))
   }
 
-  $('#environmentListTitle').toggle(!empty(mapping[condition]));
+  $('#environmentListTitle, #environmentList').toggle(!empty(mapping[condition]));
   $('#environmentList').empty();
   for (var envTag in (mapping[condition] || {})) {
     $('#environmentList').append($('<div class="btn environment btn-'+(environments[envTag] != null ? 'primary' : 'default')+'" data-environment="'+envTag+'" style="display: inline-block;margin-right: 5px;margin-bottom: 5px;">'+envTag+'</div>'));
@@ -118,12 +118,12 @@ Front.ready = function() {
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
-      var position = {lat: position.coords.latitude, lng: position.coords.longitude};
-      map.setCenter(position);
+      selectedPlace = {lat: position.coords.latitude, lng: position.coords.longitude};
+      map.setCenter(selectedPlace);
       searchBox.setBounds(map.getBounds());
       if (marker === null) {
         marker = new google.maps.Marker({
-          position: position,
+          position: selectedPlace,
           map: map,
           draggable: true
         });
@@ -170,6 +170,7 @@ Front.ready = function() {
       details: $('#details').val(),
       type: 'cause'
     }, function() {
+      alert('Thank you for your response!')
       window.location.href = window.location.href;
     })
   });
