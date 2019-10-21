@@ -1,12 +1,10 @@
-# ER_Insight
-
-# Hack ED 2019
+# What makes you Sick? (Hack ED 2019 Project)
 
 ## Project Description
 A proposed solution to identify reasons why people end up in the ER. By visualizing these trends, we hope to reduce the amount of people going to ER by solving the cause of them needing to go to the ER in the first place. For more details on the motivation and higher level descriptions, please read "Overview.pptx". 
 
 ## Demo
-Please watch "reporting_demo_3".
+https://www.youtube.com/watch?v=4Qg13s4FiQI&feature=youtu.be
 
 ## Tech Stack
 1. Frontend_Survey (TODO)
