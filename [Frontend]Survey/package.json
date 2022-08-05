@@ -9,7 +9,7 @@
     "express": "^4.16.4",
     "express-session": "^1.16.1",
     "lodash": "^4.17.11",
-    "mongoose": "^5.3.14",
+    "mongoose": "^5.7.5",
     "nodemailer": "^4.7.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
